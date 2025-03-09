@@ -67,16 +67,15 @@
 @section('content')
 <main>
     <section class="hero">
-        <h1>Luova tent, de perfecte tent</h1>
-        <h2>Perfect voor een bruiloft, buurtfeest, familiedag, festival, teamuitje of zakelijke borrel. <br>
-        Met een opperlakte van 10m x 15m heeft de tent ruimte aan maximaal 150 zitplaatsen.
-        </h2>
-
-        <img class="hero-image"
-            src="{{ asset('images/068.jpg.jpeg') }}"
-            alt="Elegant white wedding tent">
-
-        <button class="button" id="showOptions">Bekijk de opties</button>
+        <div class="hero-content">
+            <h1>Luova Tent</h1>
+            <h2>Maak je bruiloft of evenement bijzonder met onze unieke Scandinavische tent</h2>
+            <div class="hero-buttons">
+                <a href="#gallery" class="button">Bekijk Foto's</a>
+                <a href="#booking" class="button secondary">Boek Nu</a>
+            </div>
+        </div>
+        <img src="{{ asset('images/068.jpg.jpeg') }}" alt="Elegant white wedding tent" class="hero-image">
     </section>
 
     <section class="photos">
@@ -238,62 +237,67 @@
         </div>
     </section>
 
-    <section class="order" id="bookingForm">
-        <h1>Vraag een offerte aan</h1>
-        @if (session('success'))
-            <div class="alert alert-success">
-                <div class="success-content">
-                    <div class="success-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                        </svg>
-                    </div>
-                    <p>{{ session('success') }}</p>
+    <section id="booking" class="booking">
+        <h1>Boek de tent</h1>
+        <form method="POST" action="{{ route('bookings.store') }}" class="booking-form">
+            @csrf
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name">Naam</label>
+                    <input type="text" id="name" name="name" value="{{ old('name') }}" required>
+                    @error('name')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{ old('email') }}" required>
+                    @error('email')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
-        @endif
-        <form class="contact-form" method="POST" action="{{ route('bookings.store') }}">
-            @csrf
-            <div class="form-group">
-                <label for="name">Naam</label>
-                <input type="text" id="name" name="name" required value="{{ old('name') }}">
-                @error('name')
-                    <span class="error">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required value="{{ old('email') }}">
-                @error('email')
-                    <span class="error">{{ $message }}</span>
-                @enderror
-            </div>
-
-            
 
             <div class="form-group">
                 <label for="phone_number">Telefoonnummer</label>
-                <input type="tel" id="phone_number" name="phone_number" required value="{{ old('phone_number') }}">
+                <input type="tel" id="phone_number" name="phone_number" value="{{ old('phone_number') }}" required>
                 @error('phone_number')
-                    <div class="error">{{ $message }}</div>
+                    <span class="error">{{ $message }}</span>
                 @enderror
             </div>
 
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="start_date">Start Datum</label>
+                    <input type="date" id="start_date" name="start_date" value="{{ old('start_date') }}" required>
+                    @error('start_date')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="end_date">Eind Datum</label>
+                    <input type="date" id="end_date" name="end_date" value="{{ old('end_date') }}" required>
+                    @error('end_date')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
             <div class="form-group">
-                <h3>Extra opties</h3>
-                <div class="checkbox-list">
-                    <div class="checkbox-item">
-                        <input type="checkbox" name="extras[]" value="photobooth" id="photobooth" {{ in_array('photobooth', old('extras', [])) ? 'checked' : '' }}>
+                <label>Extra Opties</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="photobooth" name="extras[]" value="photobooth" {{ in_array('photobooth', old('extras', [])) ? 'checked' : '' }}>
                         <label for="photobooth">Interesse in photobooth</label>
                     </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" name="extras[]" value="lights" id="lights" {{ in_array('lights', old('extras', [])) ? 'checked' : '' }}>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="lights" name="extras[]" value="lights" {{ in_array('lights', old('extras', [])) ? 'checked' : '' }}>
                         <label for="lights">Interesse in priklichten</label>
                     </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" name="extras[]" value="foodtruck" id="foodtruck" {{ in_array('foodtruck', old('extras', [])) ? 'checked' : '' }}>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="foodtruck" name="extras[]" value="foodtruck" {{ in_array('foodtruck', old('extras', [])) ? 'checked' : '' }}>
                         <label for="foodtruck">Interesse in foodtruck</label>
                     </div>
                 </div>
@@ -302,23 +306,7 @@
                 @enderror
             </div>
 
-            <div class="form-group">
-                <label for="start_date">Datum van</label>
-                <input type="date" id="start_date" name="start_date" required value="{{ old('start_date') }}" min="{{ date('Y-m-d') }}">
-                @error('start_date')
-                    <span class="error">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="form-group">
-                <label for="end_date">Datum tot</label>
-                <input type="date" id="end_date" name="end_date" required value="{{ old('end_date') }}" min="{{ date('Y-m-d') }}">
-                @error('end_date')
-                    <span class="error">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <button type="submit" class="button">Verstuur offerte aanvraag</button>
+            <button type="submit" class="button">Boek Nu</button>
         </form>
     </section>
 </main>
