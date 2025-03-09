@@ -69,7 +69,7 @@
     <section class="hero">
         <div class="hero-content">
             <h1>Luova Tent</h1>
-            <h2>Maak je bruiloft of evenement bijzonder met onze unieke Scandinavische tent</h2>
+            <h2>Voor bruiloften, buurtfeest, familiedag, teamuitje, festivals met deze prachtige stretchtent van 10 x 15m is er ruimte voor 150 zitplaatsen</h2>
             <div class="hero-buttons">
                 <a href="#gallery" class="button">Bekijk Foto's</a>
                 <a href="#booking" class="button secondary">Boek Nu</a>
