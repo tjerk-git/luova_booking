@@ -68,7 +68,7 @@
 <main>
 
     <section class="hero">
-        <h1>Luova trouwtent, de perfecte tent</h1>
+        <h1>Luova stretchtent, de perfecte tent</h1>
         <h2>Voor bruiloften, buurtfeest, familiedag, teamuitje, festivals met deze prachtige stretchtent van 10 x 15m is er ruimte voor 150 zitplaatsen
         </h2>
 
