@@ -66,17 +66,20 @@
 
 @section('content')
 <main>
+
     <section class="hero">
-        <div class="hero-content">
-            <h1>Luova Tent</h1>
-            <h2>Voor bruiloften, buurtfeest, familiedag, teamuitje, festivals met deze prachtige stretchtent van 10 x 15m is er ruimte voor 150 zitplaatsen</h2>
-            <div class="hero-buttons">
-                <a href="#gallery" class="button">Bekijk Foto's</a>
-                <a href="#booking" class="button secondary">Boek Nu</a>
-            </div>
-        </div>
-        <img src="{{ asset('images/068.jpg.jpeg') }}" alt="Elegant white wedding tent" class="hero-image">
+        <h1>Luova trouwtent, de perfecte tent</h1>
+        <h2>Voor bruiloften, buurtfeest, familiedag, teamuitje, festivals met deze prachtige stretchtent van 10 x 15m is er ruimte voor 150 zitplaatsen
+        </h2>
+
+
+        <img class="hero-image"
+            src="/images/068.jpg.jpeg"
+            alt="Elegant white wedding tent">
+
+        <button class="button">Bekijk de opties</button>
     </section>
+
 
     <section class="photos">
         <h1>Impressie van de tent</h1>
@@ -116,7 +119,7 @@
 
 
 
-    <section class="checklist">
+    <section class="checklist" id="faq">
         <h1>Veelgestelde vragen</h1>
         <div class="checklist-grid">
 
@@ -226,18 +229,36 @@
         <h1>Extra opties</h1>
         <div class="circle-gallery" id="circle-gallery">
 
-            <a href="{{ asset('images/photobooth_2.jpeg') }}" class="circle-item" data-pswp-width="1200" data-pswp-height="1800">
+            <div class="circle-item" data-pswp-width="1200" data-pswp-height="1800">
                 <img src="{{ asset('images/photobooth_2.jpeg') }}" alt="Fun photobooth moment">
                 <span>Photobooth</span>
-            </a>
-            <a href="{{ asset('images/truck_1.png') }}" class="circle-item" data-pswp-width="1600" data-pswp-height="1067">
+            </div>
+            <div class="circle-item" data-pswp-width="1600" data-pswp-height="1067">
                 <img src="{{ asset('images/truck_1.png') }}" alt="Foodtruck setup next to tent">
                 <span>Foodtruck</span>
-            </a>
+            </div>
         </div>
     </section>
 
     <section id="booking" class="booking">
+        @if(session('success'))
+            <div class="success-message">
+                {{ session('success') }}
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+            <script>
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+                
+                document.getElementById('booking').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            </script>
+        @endif
         <h1>Boek de tent</h1>
         <form method="POST" action="{{ route('bookings.store') }}" class="booking-form">
             @csrf

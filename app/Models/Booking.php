@@ -20,7 +20,9 @@ class Booking extends Model
         'phone_number',
         'start_date',
         'end_date',
-        'extras'
+        'extras',
+        'status',
+        'notes'
     ];
 
     /**
@@ -29,8 +31,8 @@ class Booking extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'start_date' => 'datetime',
-        'end_date' => 'datetime',
+        'start_date' => 'date',
+        'end_date' => 'date',
         'extras' => 'array'
     ];
 }
