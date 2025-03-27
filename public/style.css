@@ -99,9 +99,16 @@ header {
   justify-content: space-between;
 }
 
-.logo {
-  font-size: 1.8rem;
-  font-weight: 200;
+.logo img {
+  height: 125px;
+  width: auto;
+  display: block;
+}
+
+.logo a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
 }
 
 .logo a {
@@ -987,11 +994,12 @@ header {
 .main-nav a {
   color: #2a3d38;
   text-decoration: none;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   font-weight: 500;
   padding: 0.5rem;
   position: relative;
   transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
 }
 
 .main-nav a::after {

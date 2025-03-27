@@ -68,7 +68,7 @@
 <main>
 
     <section class="hero">
-        <h1>Luova stretchtent, de perfecte tent</h1>
+        <h1>De perfecte tent</h1>
         <h2>Voor bruiloften, buurtfeest, familiedag, teamuitje, festivals met deze prachtige stretchtent van 10 x 15m is er ruimte voor 150 zitplaatsen
         </h2>
 
@@ -77,7 +77,7 @@
             src="/images/068.jpg.jpeg"
             alt="Elegant white wedding tent">
 
-        <button class="button">Bekijk de opties</button>
+        <button id="options-button" class="button">Bekijk de opties</button>
     </section>
 
 
@@ -228,17 +228,186 @@
     <section class="tent-info">
         <h1>Extra opties</h1>
         <div class="circle-gallery" id="circle-gallery">
+            <div class="circle-item" data-title="Silent Disco - €140,-">
+                <div class="modal-content-template" hidden>
+                    <img class="modal-image" src="{{ asset('images/silent_disco-compressed.jpeg') }}" alt="Silent Disco setup next to tent">
+                    <p>Elke DJ (of act) brengt zijn eigen vibe, en jij bepaalt zelf waar je zin in hebt, gewoon met een druk op de knop van je koptelefoon! De gekleurde lampjes rood en groen laten je meteen zien wie hetzelfde kanaal luistert. Knettersvals meezingen met de grootste hits, terwijl je buurman lekker danst op een totaal ander nummer. Iedereen in zijn eigen wereld, maar toch samen op de dansvloer.</p>
+                    
+                    <h3>Inhoud:</h3>
+                    <ul>
+                        <li>32 koptelefoons (volledig opgeladen)</li>
+                        <li>2 zenders</li>
+                        <li>Opslag boxen</li>
+                        <li>Aux kabels</li>
+                        <li>Stekkerdoos 6-voudig</li>
+                        <li>Transportkar</li>
+                    </ul>
+                    <p>Wilt u meer koptelefoons laat het ons weten.</p>
+                </div>
+                <img src="{{ asset('images/silent_disco-compressed.jpeg') }}" alt="Silent Disco setup next to tent">
+                <span>Silent Disco</span>
+            </div>
+            <div class="circle-item" data-title="Een leuke photobooth">
+                <div class="modal-content-template" hidden>
+                    <img class="modal-image" src="{{ asset('images/photobooth_2.jpeg') }}" alt="Fun photobooth moment">
+                    <h2>Maak blijvende herinneringen met onze photobooth</h2>
+                    <p>Stap in je eigen ontworpen photobooth kies je eigen slogan, of logo voor op jou gepersonaliseerde magazine. Of het nu voor een themafeest, bruiloft of ander event. Met één klik op de camera creëer je herinneringen die je voor altijd kunt koesteren!</p>
 
-            <div class="circle-item" data-pswp-width="1200" data-pswp-height="1800">
+                    <h3>Photobooth - €550,- per dag</h3>
+                    <p>Inclusief:</p>
+                    <ul>
+                        <li>Gepersonaliseerde bestickering (denk hierbij aan bedrijfsnamen, logo, slogan of favoriete songtekst)</li>
+                        <li>Schoonmaakkosten</li>
+                        <li>Gepersonaliseerde digitale Photogallery</li>
+                    </ul>
+
+                    <h3>Locatie eisen</h3>
+                    <ul>
+                        <li>De ondergrond van de Photobooth dient vlak te zijn i.v.m. de stabiliteit van de booth</li>
+                        <li>I.v.m. reflectie van het glas dient er zo weinig mogelijk tegenlicht te zijn op de plek waar hij komt te staan</li>
+                    </ul>
+                </div>
                 <img src="{{ asset('images/photobooth_2.jpeg') }}" alt="Fun photobooth moment">
                 <span>Photobooth</span>
             </div>
-            <div class="circle-item" data-pswp-width="1600" data-pswp-height="1067">
-                <img src="{{ asset('images/truck_1.png') }}" alt="Foodtruck setup next to tent">
+            <div class="circle-item" data-title="Een lekkere foodtruck">
+                <div class="modal-content-template" hidden>
+                    <img class="modal-image" src="{{ asset('images/foodtruck-compressed.jpeg') }}" alt="Foodtruck setup next to tent">
+                    <h2>Huur een unieke oldtimer truck bij ons</h2>
+                    <p>Of je nu de lekkerste gerechten wilt bereiden, de truck wilt omtoveren tot DJ booth of hem als eyecatcher op je feest wilt zetten – alles is mogelijk! De truck wordt geleverd zonder personeel, zodat je zelf de touwtjes in handen hebt. Wil je je feestje helemaal personaliseren? Geen probleem! Laat de truck aanpassen met jouw logo of teksten en maak van jouw evenement iets onvergetelijks.</p>
+
+                    <h3>De truck is €275,- per dag</h3>
+                    <p>De truck beschikt over:</p>
+                    <ul>
+                        <li>Een ruim werkblad</li>
+                        <li>2 koelingen</li>
+                        <li>Grote ton (kan gebruikt worden als prullenbak)</li>
+                        <li>Uitzetbord incl. krijtstiften (1 zijde krijtbord + 1 zijde white board)</li>
+                        <li>Lampjes</li>
+                    </ul>
+
+                    <p>Wilt u het liefst alles uit handen geven laat het ons weten.<br>
+             </p>
+                </div>
+                <img src="{{ asset('images/foodtruck-compressed.jpeg') }}" alt="Foodtruck setup next to tent">
                 <span>Foodtruck</span>
             </div>
         </div>
     </section>
+
+    <dialog id="optionModal" class="modal">
+        <form method="dialog" class="modal-content">
+            <div id="modalContent"></div>
+            <div class="modal-content-wrapper">
+                <h2 id="modalTitle"></h2>
+                <div id="modalContentText"></div>
+                <button>Sluiten</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('optionModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            const modalContentText = document.getElementById('modalContentText');
+
+            document.querySelectorAll('.circle-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    modalTitle.textContent = item.dataset.title;
+                    const template = item.querySelector('.modal-content-template');
+                    const content = template.innerHTML;
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = content;
+                    
+                    // Move the image to the top content area
+                    const image = tempDiv.querySelector('.modal-image');
+                    if (image) {
+                        modalContent.innerHTML = image.outerHTML;
+                        image.remove();
+                    }
+                    
+                    // Put the rest of the content in the text area
+                    modalContentText.innerHTML = tempDiv.innerHTML;
+                    modal.showModal();
+                });
+            });
+        });
+    </script>
+
+    <style>
+        dialog.modal {
+            padding: 0;
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 800px;
+            overflow: hidden;
+        }
+
+        dialog.modal::backdrop {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            max-width: 100%;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            margin-bottom: 0;
+        }
+
+        .modal-content-wrapper {
+            padding: 2rem;
+        }
+
+        .modal h2 {
+            color: #2a3d38;
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-content p {
+            line-height: 1.6;
+            color: #4a5568;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+            color: #4a5568;
+        }
+
+        .modal-content h3 {
+            color: #2a3d38;
+            font-family: 'Poppins', sans-serif;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .modal button {
+            margin-top: 2rem;
+            padding: 0.75rem 2rem;
+            background: #2a3d38;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .modal button:hover {
+            background: #1a2d28;
+        }
+    </style>
 
     <section id="booking" class="booking">
         @if(session('success'))

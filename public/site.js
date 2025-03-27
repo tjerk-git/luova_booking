@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const startDateInput = document.getElementById('start_date');
     const endDateInput = document.getElementById('end_date');
 
+
     // Update end date min value when start date changes
     startDateInput.addEventListener('change', function() {
         endDateInput.min = startDateInput.value;
@@ -11,10 +12,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Show options button handler
-    const showOptionsButton = document.getElementById('showOptions');
+    const showOptionsButton = document.getElementById('options-button');
     if (showOptionsButton) {
         showOptionsButton.addEventListener('click', function() {
-            const bookingForm = document.getElementById('bookingForm');
+            const bookingForm = document.getElementById('booking');
             bookingForm.scrollIntoView({ behavior: 'smooth' });
         });
     }

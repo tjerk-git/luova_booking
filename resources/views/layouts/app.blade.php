@@ -11,7 +11,7 @@
 <body>
     <header>
         <div class="logo">
-            <a href="/">Luova Tent</a>
+            <a href="/"><img src="{{ asset('/images/logo-transparant.png') }}" alt="Luova Tent Logo"></a>
         </div>
         <nav class="main-nav">
             <ul>
