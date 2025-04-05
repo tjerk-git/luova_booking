@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Str;
+@endphp
+
 @extends('layouts.app')
 
 @section('head')
@@ -84,40 +88,13 @@
     <section class="photos">
         <h1>Impressie van de tent</h1>
         <div class="gallery-grid" id="gallery">
-            <a href="{{ asset('images/027.jpg') }}" data-pswp-width="1050" data-pswp-height="701">
-                <img src="{{ asset('images/027.jpg') }}" alt="Elegant white wedding tent">
+            @foreach(\App\Models\Photo::where('is_published', true)->orderBy('order_column')->get() as $photo)
+            <a href="{{ asset('storage/' . $photo->image_path) }}" data-pswp-width="{{ $photo->width }}" data-pswp-height="{{ $photo->height }}">
+                <img src="{{ asset('storage/' . $photo->image_path) }}" alt="{{ $photo->alt_text ?? $photo->title }}">
             </a>
-            <a href="{{ asset('images/036.jpg') }}" data-pswp-width="1050" data-pswp-height="701">
-                <img src="{{ asset('images/036.jpg') }}" alt="Wedding tent interior">
-            </a>
-            <a href="{{ asset('images/053.jpg') }}" data-pswp-width="1050" data-pswp-height="701">
-                <img src="{{ asset('images/053.jpg') }}" alt="Wedding tent setup">
-            </a>
-            <a href="{{ asset('images/056.jpg') }}" data-pswp-width="1050" data-pswp-height="701">
-                <img src="{{ asset('images/056.jpg') }}" alt="Wedding tent decoration">
-            </a>
-            <a href="{{ asset('images/059.jpg') }}" data-pswp-width="1050" data-pswp-height="701">
-                <img src="{{ asset('images/059.jpg') }}" alt="Elegant white wedding tent">
-            </a>
-            <a href="{{ asset('images/061.jpg') }}" data-pswp-width="1050" data-pswp-height="701">
-                <img src="{{ asset('images/061.jpg') }}" alt="Wedding tent interior">
-            </a>
-            <a href="{{ asset('images/062.jpg') }}" data-pswp-width="1050" data-pswp-height="701">
-                <img src="{{ asset('images/062.jpg') }}" alt="Wedding tent setup">
-            </a>
-            <a href="{{ asset('images/068.jpg.jpeg') }}" data-pswp-width="2048" data-pswp-height="1536">
-                <img src="{{ asset('images/068.jpg.jpeg') }}" alt="Wedding tent decoration">
-            </a>
-            <a href="{{ asset('images/321.jpg.jpeg') }}" data-pswp-width="1024" data-pswp-height="768">
-                <img src="{{ asset('images/321.jpg.jpeg') }}" alt="Wedding tent decoration">
-            </a>
-            <a href="{{ asset('images/70.jpg.jpeg') }}" data-pswp-width="2048" data-pswp-height="1536">
-                <img src="{{ asset('images/70.jpg.jpeg') }}" alt="Wedding tent decoration">
-            </a>
+            @endforeach
         </div>
     </section>
-
-
 
     <section class="checklist" id="faq">
         <h1>Veelgestelde vragen</h1>
@@ -139,21 +116,14 @@
     <section class="tent-info">
         <h1>Extra opties</h1>
         <div class="circle-gallery" id="circle-gallery">
+            @php
+                $product = App\Models\Product::first();
+            @endphp
+            
             <div class="circle-item" data-title="Silent Disco - €140,-">
                 <div class="modal-content-template" hidden>
                     <img class="modal-image" src="{{ asset('images/silent_disco-compressed.jpeg') }}" alt="Silent Disco setup next to tent">
-                    <p>Elke DJ (of act) brengt zijn eigen vibe, en jij bepaalt zelf waar je zin in hebt, gewoon met een druk op de knop van je koptelefoon! De gekleurde lampjes rood en groen laten je meteen zien wie hetzelfde kanaal luistert. Knettersvals meezingen met de grootste hits, terwijl je buurman lekker danst op een totaal ander nummer. Iedereen in zijn eigen wereld, maar toch samen op de dansvloer.</p>
-                    
-                    <h3>Inhoud:</h3>
-                    <ul>
-                        <li>32 koptelefoons (volledig opgeladen)</li>
-                        <li>2 zenders</li>
-                        <li>Opslag boxen</li>
-                        <li>Aux kabels</li>
-                        <li>Stekkerdoos 6-voudig</li>
-                        <li>Transportkar</li>
-                    </ul>
-                    <p>Wilt u meer koptelefoons laat het ons weten.</p>
+                    {!! $product->silent_disco_content !!}
                 </div>
                 <img src="{{ asset('images/silent_disco-compressed.jpeg') }}" alt="Silent Disco setup next to tent">
                 <span>Silent Disco</span>
@@ -161,22 +131,7 @@
             <div class="circle-item" data-title="Een leuke photobooth">
                 <div class="modal-content-template" hidden>
                     <img class="modal-image" src="{{ asset('images/photobooth_2.jpeg') }}" alt="Fun photobooth moment">
-                    <h2>Maak blijvende herinneringen met onze photobooth</h2>
-                    <p>Stap in je eigen ontworpen photobooth kies je eigen slogan, of logo voor op jou gepersonaliseerde magazine. Of het nu voor een themafeest, bruiloft of ander event. Met één klik op de camera creëer je herinneringen die je voor altijd kunt koesteren!</p>
-
-                    <h3>Photobooth - €550,- per dag</h3>
-                    <p>Inclusief:</p>
-                    <ul>
-                        <li>Gepersonaliseerde bestickering (denk hierbij aan bedrijfsnamen, logo, slogan of favoriete songtekst)</li>
-                        <li>Schoonmaakkosten</li>
-                        <li>Gepersonaliseerde digitale Photogallery</li>
-                    </ul>
-
-                    <h3>Locatie eisen</h3>
-                    <ul>
-                        <li>De ondergrond van de Photobooth dient vlak te zijn i.v.m. de stabiliteit van de booth</li>
-                        <li>I.v.m. reflectie van het glas dient er zo weinig mogelijk tegenlicht te zijn op de plek waar hij komt te staan</li>
-                    </ul>
+                    {!! $product->photobooth_content !!}
                 </div>
                 <img src="{{ asset('images/photobooth_2.jpeg') }}" alt="Fun photobooth moment">
                 <span>Photobooth</span>
@@ -184,21 +139,7 @@
             <div class="circle-item" data-title="Een lekkere foodtruck">
                 <div class="modal-content-template" hidden>
                     <img class="modal-image" src="{{ asset('images/foodtruck-compressed.jpeg') }}" alt="Foodtruck setup next to tent">
-                    <h2>Huur een unieke oldtimer truck bij ons</h2>
-                    <p>Of je nu de lekkerste gerechten wilt bereiden, de truck wilt omtoveren tot DJ booth of hem als eyecatcher op je feest wilt zetten – alles is mogelijk! De truck wordt geleverd zonder personeel, zodat je zelf de touwtjes in handen hebt. Wil je je feestje helemaal personaliseren? Geen probleem! Laat de truck aanpassen met jouw logo of teksten en maak van jouw evenement iets onvergetelijks.</p>
-
-                    <h3>De truck is €275,- per dag</h3>
-                    <p>De truck beschikt over:</p>
-                    <ul>
-                        <li>Een ruim werkblad</li>
-                        <li>2 koelingen</li>
-                        <li>Grote ton (kan gebruikt worden als prullenbak)</li>
-                        <li>Uitzetbord incl. krijtstiften (1 zijde krijtbord + 1 zijde white board)</li>
-                        <li>Lampjes</li>
-                    </ul>
-
-                    <p>Wilt u het liefst alles uit handen geven laat het ons weten.<br>
-             </p>
+                    {!! $product->foodtruck_content !!}
                 </div>
                 <img src="{{ asset('images/foodtruck-compressed.jpeg') }}" alt="Foodtruck setup next to tent">
                 <span>Foodtruck</span>
