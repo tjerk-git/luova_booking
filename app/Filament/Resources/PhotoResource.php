@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PhotoResource\Pages;
 use App\Filament\Resources\PhotoResource\RelationManagers;
 use App\Models\Photo;
+use App\Services\ImageService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class PhotoResource extends Resource
 {
@@ -39,9 +41,15 @@ class PhotoResource extends Resource
                             ->image()
                             ->imageEditor()
                             ->required()
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                             ->directory('images')
                             ->disk('public')
                             ->columnSpanFull()
+                            ->saveUploadedFileUsing(function (TemporaryUploadedFile $file) {
+                                $imageService = new ImageService();
+                                $result = $imageService->convertToWebP($file);
+                                return $result['path'];
+                            })
                             ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, ?string $state) {
                                 // Auto-generate title from filename if not provided
                                 if (!$get('title') && $state) {
