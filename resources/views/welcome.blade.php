@@ -122,106 +122,17 @@
     <section class="checklist" id="faq">
         <h1>Veelgestelde vragen</h1>
         <div class="checklist-grid">
-
-        <details class="checklist-item">
-                <summary>
-                    <h3>Wat kost het?</h3>
-                    <span class="icon">+</span>
-                </summary>
-                <div class="content">
-                    <ul>
-                       <li>De basisprijs voor de tent is €1150,-</li>
-                       <li>Bij langer huren krijg je korting</li>
-                       <li>Reiskosten zijn 25 euro per uur</li>
-                    </ul>
-                </div>
-            </details>
-   
-
-            <details class="checklist-item">
-                <summary>
-                    <h3>Is mijn locatie geschikt?</h3>
-                    <span class="icon">+</span>
-                </summary>
-                <div class="content">
-                    <ul>
-                        <li>Zorg voor voldoende doorgang voor een auto met aanhanger.</li>
-                        <li>We gebruiken lange grondpennen (100 cm). Let op: controleer vooraf de locatie van ondergrondse leidingen.</li>
-                        <li>Voor het opbouwen van de tent is een oppervlakte nodig van 12 x 17, i.v.m de haringen</li>
-                    </ul>
-                </div>
-            </details>
-
-            <details class="checklist-item">
-                <summary>
-                    <h3>Wie bouwt de tent op?</h3>
-                    <span class="icon">+</span>
-                </summary>
-                <div class="content">
-                    <p>Zorg voor 3 sterke personen om te helpen bij het opzetten van de tent.</p>
-                    <p>Hetzelfde geldt voor het afbouwen</p>
-                </div>
-            </details>
-
-            <details class="checklist-item">
-                <summary>
-                    <h3>Wat doen we met slecht weer?</h3>
-                    <span class="icon">+</span>
-                </summary>
-                <div class="content">
-                    <p>Bij extreem slecht weer of windkracht boven 6 kunnen wij de tent niet plaatsen. Zorg voor een alternatief plan.</p>
-                    <p>Kijk ook even naar onze annuleringsregeling!</p>
-                </div>
-            </details>
-
-            <details class="checklist-item">
-                <summary>
-                    <h3>Droogtijd</h3>
-                    <span class="icon">+</span>
-                </summary>
-                <div class="content">
-                    <p>De tent moet droog worden opgevouwen. Bespreek de mogelijkheid om de tent op locatie te laten staan tot deze droog is.</p>
-                </div>
-            </details>
-
-            <details class="checklist-item">
-                <summary>
-                    <h3>Annuleringsregeling</h3>
-                    <span class="icon">+</span>
-                </summary>
-                <div class="content">
-                    <p>Tot een week van te voren annuleren is gratis!</p>
-                    <p>Tot 24 uur van te voren betaal je 20% van de totaalprijs.</p>
-                    <p>Binnen 24 uur na annuleren betaal je 50%.</p>
-                </div>
-            </details>
-
-            <details class="checklist-item">
-                <summary>
-                    <h3>Wat zijn de regels?</h3>
-                    <span class="icon">+</span>
-                </summary>
-                <div class="content">
-                    <ul>
-                        <li>Niet koken of roken onder de tent</li>
-                        <li>Geen papieren versieringen of confetti</li>
-                        <li>Gebruik geen tape i.v.m vlekken</li>
-                        <li>Tent mag niet verplaatst worden</li>
-                    </ul>
-                </div>
-            </details>
-            <details class="checklist-item">
-                <summary>
-                    <h3>Wat is er verantwoordelijk voor?</h3>
-                    <span class="icon">+</span>
-                </summary>
-                <div class="content">
-                    <ul>
-                        <li>Tijdens het huren ben je verantwoordelijk voor de tent en de eventuele inrichting</li>
-                        <li>Tijdens het opbouwen controleren we samene de veiligheid van de tent</li>
-                    </ul>
-                </div>
-            </details>
+            @foreach(\App\Models\Faq::where('is_published', true)->orderBy('order_column')->get() as $faq)
+                <details class="checklist-item">
+                    <summary>
+                        <h3>{{ $faq->question }}</h3>
+                        <span class="icon">+</span>
+                    </summary>
+                    <div class="content">
+                        {!! $faq->answer !!}
+                    </div>
+                </details>
+            @endforeach
         </div>
     </section>
 
