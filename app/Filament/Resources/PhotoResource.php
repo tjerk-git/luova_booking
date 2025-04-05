@@ -41,7 +41,7 @@ class PhotoResource extends Resource
                             ->image()
                             ->imageEditor()
                             ->required()
-                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png', 'image/webp'])
                             ->directory('images')
                             ->disk('public')
                             ->columnSpanFull()
