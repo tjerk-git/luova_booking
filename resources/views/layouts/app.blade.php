@@ -56,8 +56,8 @@
             <div class="footer-section">
                 <h4>Informatie</h4>
                 <ul>
-                    <li><a href="/voorwaarden">Algemene voorwaarden</a></li>
-                    <li><a href="/faq">Veelgestelde vragen</a></li>
+                    <li><a href="{{ asset('assets/algemene-voorwaarden-luova.pdf') }}" target="_blank">Algemene voorwaarden</a></li>
+                    <li><a href="#faq">Veelgestelde vragen</a></li>
                 </ul>
             </div>
         </div>

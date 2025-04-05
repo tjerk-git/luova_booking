@@ -215,6 +215,19 @@ use Illuminate\Support\Str;
             margin-bottom: 0;
         }
 
+        @media (max-width: 768px) {
+            .modal-image {
+                height: 250px; /* Reduced height for mobile */
+                object-fit: cover;
+                display: block !important; /* Force display */
+                visibility: visible !important; /* Ensure visibility */
+            }
+            
+            .modal-content-wrapper {
+                padding: 1.5rem;
+            }
+        }
+
         .modal-content-wrapper {
             padding: 2rem;
         }
