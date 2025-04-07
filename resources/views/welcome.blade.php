@@ -69,7 +69,7 @@ use Illuminate\Support\Str;
 @endsection
 
 @section('content')
-<main>
+
 
     <section class="hero">
         @php
@@ -369,6 +369,5 @@ use Illuminate\Support\Str;
             <button type="submit" class="button">Boek Nu</button>
         </form>
     </section>
-</main>
 
 @endsection
