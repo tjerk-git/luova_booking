@@ -125,48 +125,50 @@ use Illuminate\Support\Str;
     </section>
 
     <section class="extra-options" id="extra-options">
-        <h1>Extra Opties</h1>
-        <div class="options-grid">
-            @php
-                $products = App\Models\Product::where('is_published', true)
-                    ->orderBy('created_at')
-                    ->get();
-            @endphp
-            
-            @foreach($products as $product)
-            <div class="option-item" data-micromodal-trigger="modal-{{ $product->id }}">
-                <div class="option-image">
-                    <img src="{{ $product->image_url }}" alt="{{ $product->title }}">
-                </div>
-                <h2>{{ $product->title }}</h2>
-                <div class="hidden-content" hidden>
-                    <img class="modal-image" src="{{ $product->image_url }}" alt="{{ $product->title }}">
-                    {!! $product->content !!}
-                </div>
-            </div>
-            
-            <!-- Modal for {{ $product->title }} -->
-            <div class="modal micromodal-slide" id="modal-{{ $product->id }}" aria-hidden="true">
-                <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-                    <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-{{ $product->id }}-title">
-                        <header class="modal__header">
-                            <h2 class="modal__title" id="modal-{{ $product->id }}-title">
-                                {{ $product->title }}
-                            </h2>
-                            <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
-                        </header>
-                        <main class="modal__content" id="modal-{{ $product->id }}-content">
-                            <div class="modal__image-container">
-                                <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="modal__image">
-                            </div>
-                            <div class="modal__text">
-                                {!! $product->content !!}
-                            </div>
-                        </main>
+        <div class="section-container">
+            <h1>Extra Opties</h1>
+            <div class="options-grid">
+                @php
+                    $products = App\Models\Product::where('is_published', true)
+                        ->orderBy('created_at')
+                        ->get();
+                @endphp
+                
+                @foreach($products as $product)
+                <div class="option-item" data-micromodal-trigger="modal-{{ $product->id }}">
+                    <div class="option-image">
+                        <img src="{{ $product->image_url }}" alt="{{ $product->title }}">
+                    </div>
+                    <h2>{{ $product->title }}</h2>
+                    <div class="hidden-content" hidden>
+                        <img class="modal-image" src="{{ $product->image_url }}" alt="{{ $product->title }}">
+                        {!! $product->content !!}
                     </div>
                 </div>
+                
+                <!-- Modal for {{ $product->title }} -->
+                <div class="modal micromodal-slide" id="modal-{{ $product->id }}" aria-hidden="true">
+                    <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+                        <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-{{ $product->id }}-title">
+                            <header class="modal__header">
+                                <h2 class="modal__title" id="modal-{{ $product->id }}-title">
+                                    {{ $product->title }}
+                                </h2>
+                                <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+                            </header>
+                            <main class="modal__content" id="modal-{{ $product->id }}-content">
+                                <div class="modal__image-container">
+                                    <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="modal__image">
+                                </div>
+                                <div class="modal__text">
+                                    {!! $product->content !!}
+                                </div>
+                            </main>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
             </div>
-            @endforeach
         </div>
     </section>
 

@@ -1335,7 +1335,16 @@ section {
 /* Extra options section */
 .extra-options {
   padding: 4rem 2rem;
-  text-align: center;
+}
+
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.extra-options h1 {
+  text-align: left;
+  margin-bottom: 2rem;
 }
 
 .options-grid {
@@ -1380,6 +1389,7 @@ section {
   margin: 0;
   font-size: 1.25rem;
   color: #2a3d38;
+  text-align: left;
 }
 
 /* Micromodal styles */
@@ -1452,7 +1462,7 @@ section {
 }
 
 .modal__image-container {
-  text-align: center;
+  text-align: left;
   margin-bottom: 1.5rem;
 }
 
@@ -1461,10 +1471,12 @@ section {
   max-height: 300px;
   object-fit: contain;
   border-radius: 8px;
+  display: block;
 }
 
 .modal__text {
   line-height: 1.6;
+  text-align: left;
 }
 
 /* Micromodal animations */
