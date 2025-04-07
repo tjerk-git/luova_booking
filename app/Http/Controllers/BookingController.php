@@ -19,10 +19,8 @@ class BookingController extends Controller
             'start_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after_or_equal:start_date',
             'extras' => 'nullable|array',
-            'extras.*' => 'in:photobooth,lights,foodtruck'
         ], [
             'extras.array' => 'Er is een fout opgetreden bij het verwerken van de extra opties.',
-            'extras.*.in' => 'Een van de geselecteerde extra opties is niet geldig.'
         ]);
 
         $booking = new Booking();

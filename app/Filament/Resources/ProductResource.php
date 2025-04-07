@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
+use App\Services\ImageService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,6 +13,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProductResource extends Resource
 {
@@ -27,20 +30,30 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Tent Section')
+                Forms\Components\Section::make('Product Information')
                     ->schema([
-                        Forms\Components\TextInput::make('tent_heading')
-                            ->label('Tent Heading')
-                            ->required(),
-                        Forms\Components\Textarea::make('tent_subheading')
-                            ->label('Tent Subheading')
+                        Forms\Components\Hidden::make('name'),
+                        Forms\Components\TextInput::make('title')
+                            ->label('Product Title')
                             ->required()
-                            ->rows(3),
-                    ]),
-                Forms\Components\Section::make('Silent Disco')
-                    ->schema([
-                        Forms\Components\RichEditor::make('silent_disco_content')
-                            ->label('Content')
+                            ->maxLength(255)
+                            ->afterStateUpdated(function (string $state, callable $set) {
+                                // Generate a slug from the title for the name field
+                                $set('name', Str::slug($state));
+                            }),
+                        Forms\Components\Toggle::make('is_published')
+                            ->label('Published')
+                            ->default(true),
+                        Forms\Components\FileUpload::make('image')
+                            ->label('Product Image')
+                            ->image()
+                            ->disk('public')
+                            ->directory('products')
+                            ->visibility('public')
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/jpg'])
+                            ->required(),
+                        Forms\Components\RichEditor::make('content')
+                            ->label('Product Content')
                             ->toolbarButtons([
                                 'blockquote',
                                 'bold',
@@ -55,46 +68,7 @@ class ProductResource extends Resource
                                 'underline',
                                 'undo',
                             ])
-                            ->columnSpanFull(),
-                    ]),
-                Forms\Components\Section::make('Photobooth')
-                    ->schema([
-                        Forms\Components\RichEditor::make('photobooth_content')
-                            ->label('Content')
-                            ->toolbarButtons([
-                                'blockquote',
-                                'bold',
-                                'bulletList',
-                                'h2',
-                                'h3',
-                                'italic',
-                                'link',
-                                'orderedList',
-                                'redo',
-                                'strike',
-                                'underline',
-                                'undo',
-                            ])
-                            ->columnSpanFull(),
-                    ]),
-                Forms\Components\Section::make('Foodtruck')
-                    ->schema([
-                        Forms\Components\RichEditor::make('foodtruck_content')
-                            ->label('Content')
-                            ->toolbarButtons([
-                                'blockquote',
-                                'bold',
-                                'bulletList',
-                                'h2',
-                                'h3',
-                                'italic',
-                                'link',
-                                'orderedList',
-                                'redo',
-                                'strike',
-                                'underline',
-                                'undo',
-                            ])
+                            ->required()
                             ->columnSpanFull(),
                     ]),
             ]);
@@ -104,20 +78,47 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Title')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Image')
+                    ->disk('public')
+                    ->square(),
+                Tables\Columns\IconColumn::make('is_published')
+                    ->label('Published')
+                    ->boolean()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Last Updated')
                     ->dateTime()
                     ->sortable(),
             ])
+            ->defaultSort('order_column')
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->before(function (Product $record) {
+                        // Delete associated image when deleting a product
+                        if ($record->image) {
+                            Storage::disk('public')->delete($record->image);
+                        }
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->before(function ($records) {
+                            foreach ($records as $record) {
+                                if ($record->image) {
+                                    Storage::disk('public')->delete($record->image);
+                                }
+                            }
+                        }),
                 ]),
             ]);
     }
@@ -136,5 +137,10 @@ class ProductResource extends Resource
             'create' => Pages\CreateProduct::route('/create'),
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
-    }    
+    }
+    
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->latest();
+    }
 }

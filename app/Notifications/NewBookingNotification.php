@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\Booking;
+use App\Models\Product;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -28,16 +29,32 @@ class NewBookingNotification extends Notification
         $extras = [];
         if (!empty($this->booking->extras)) {
             foreach ($this->booking->extras as $extra) {
-                switch ($extra) {
-                    case 'photobooth':
-                        $extras[] = 'Interesse in photobooth';
-                        break;
-                    case 'lights':
-                        $extras[] = 'Interesse in priklichten';
-                        break;
-                    case 'foodtruck':
-                        $extras[] = 'Interesse in foodtruck';
-                        break;
+                // First check if it's a product
+                $product = Product::where('name', $extra)->first();
+                if ($product) {
+                    $extras[] = 'Interesse in ' . $product->title;
+                } else {
+                    // Handle legacy extras
+                    switch ($extra) {
+                        case 'photobooth':
+                            $extras[] = 'Interesse in photobooth';
+                            break;
+                        case 'lights':
+                            $extras[] = 'Interesse in priklichten';
+                            break;
+                        case 'foodtruck':
+                            $extras[] = 'Interesse in foodtruck';
+                            break;
+                        case 'silent_disco':
+                            $extras[] = 'Interesse in Silent Disco';
+                            break;
+                        case 'sfeerlichten':
+                            $extras[] = 'Interesse in sfeerlichten';
+                            break;
+                        case 'geluidsinstallatie':
+                            $extras[] = 'Interesse in geluidsinstallatie';
+                            break;
+                    }
                 }
             }
         }

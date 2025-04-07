@@ -73,10 +73,10 @@ use Illuminate\Support\Str;
 
     <section class="hero">
         @php
-            $product = App\Models\Product::first();
+            $tent = App\Models\Tent::where('is_published', true)->first();
         @endphp
-        <h1>{{ $product->tent_heading ?? 'De perfecte tent' }}</h1>
-        <h2>{{ $product->tent_subheading ?? 'Voor bruiloften, buurtfeest, familiedag, teamuitje, festivals met deze prachtige stretchtent van 10 x 15m is er ruimte voor 150 zitplaatsen' }}
+        <h1>{{ $tent->heading ?? 'De perfecte tent' }}</h1>
+        <h2>{{ $tent->subheading ?? 'Voor bruiloften, buurtfeest, familiedag, teamuitje, festivals met deze prachtige stretchtent van 10 x 15m is er ruimte voor 150 zitplaatsen' }}
         </h2>
 
         <img class="hero-image"
@@ -119,43 +119,30 @@ use Illuminate\Support\Str;
         <h1>Extra opties</h1>
         <div class="circle-gallery" id="circle-gallery">
             @php
-                $product = App\Models\Product::first();
+                $products = App\Models\Product::where('is_published', true)
+                    ->orderBy('created_at')
+                    ->get();
             @endphp
             
-            <div class="circle-item" data-title="Silent Disco - €140,-">
+            @foreach($products as $product)
+            <div class="circle-item" data-title="{{ $product->title }}">
                 <div class="modal-content-template" hidden>
-                    <img class="modal-image" src="{{ asset('images/silent_disco-compressed.jpeg') }}" alt="Silent Disco setup next to tent">
-                    {!! $product->silent_disco_content !!}
+                    <img class="modal-image" src="{{ $product->image_url }}" alt="{{ $product->title }}">
+                    {!! $product->content !!}
                 </div>
-                <img src="{{ asset('images/silent_disco-compressed.jpeg') }}" alt="Silent Disco setup next to tent">
-                <span>Silent Disco</span>
+                <img src="{{ $product->image_url }}" alt="{{ $product->title }}">
+                <span>{{ $product->title }}</span>
             </div>
-            <div class="circle-item" data-title="Een leuke photobooth">
-                <div class="modal-content-template" hidden>
-                    <img class="modal-image" src="{{ asset('images/photobooth_2.jpeg') }}" alt="Fun photobooth moment">
-                    {!! $product->photobooth_content !!}
-                </div>
-                <img src="{{ asset('images/photobooth_2.jpeg') }}" alt="Fun photobooth moment">
-                <span>Photobooth</span>
-            </div>
-            <div class="circle-item" data-title="Een lekkere foodtruck">
-                <div class="modal-content-template" hidden>
-                    <img class="modal-image" src="{{ asset('images/foodtruck-compressed.jpeg') }}" alt="Foodtruck setup next to tent">
-                    {!! $product->foodtruck_content !!}
-                </div>
-                <img src="{{ asset('images/foodtruck-compressed.jpeg') }}" alt="Foodtruck setup next to tent">
-                <span>Foodtruck</span>
-            </div>
+            @endforeach
         </div>
     </section>
 
     <dialog id="optionModal" class="modal">
         <form method="dialog" class="modal-content">
-            <div id="modalContent"></div>
+            <button class="close-button" aria-label="Close modal">×</button>
             <div class="modal-content-wrapper">
                 <h2 id="modalTitle"></h2>
-                <div id="modalContentText"></div>
-                <button>Sluiten</button>
+                <div id="modalContentText" class="modal-text-content"></div>
             </div>
         </form>
     </dialog>
@@ -164,28 +151,31 @@ use Illuminate\Support\Str;
         document.addEventListener('DOMContentLoaded', () => {
             const modal = document.getElementById('optionModal');
             const modalTitle = document.getElementById('modalTitle');
-            const modalContent = document.getElementById('modalContent');
             const modalContentText = document.getElementById('modalContentText');
+            const closeButton = modal.querySelector('.close-button');
 
             document.querySelectorAll('.circle-item').forEach(item => {
                 item.addEventListener('click', () => {
                     modalTitle.textContent = item.dataset.title;
                     const template = item.querySelector('.modal-content-template');
                     const content = template.innerHTML;
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = content;
                     
-                    // Move the image to the top content area
-                    const image = tempDiv.querySelector('.modal-image');
-                    if (image) {
-                        modalContent.innerHTML = image.outerHTML;
-                        image.remove();
-                    }
-                    
-                    // Put the rest of the content in the text area
-                    modalContentText.innerHTML = tempDiv.innerHTML;
+                    // Put all content in the text area
+                    modalContentText.innerHTML = content;
                     modal.showModal();
                 });
+            });
+            
+            // Close modal when clicking the close button
+            closeButton.addEventListener('click', () => {
+                modal.close();
+            });
+            
+            // Close modal when clicking outside
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.close();
+                }
             });
         });
     </script>
@@ -198,8 +188,13 @@ use Illuminate\Support\Str;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             width: 90%;
             max-width: 800px;
-            max-height: 90vh; /* Limit height to 90% of viewport height */
-            overflow: hidden; /* Keep this to hide overflow from rounded corners */
+            max-height: 85vh;
+            overflow: hidden;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0;
         }
 
         dialog.modal::backdrop {
@@ -208,78 +203,81 @@ use Illuminate\Support\Str;
         }
 
         .modal-content {
-            max-width: 100%;
-            max-height: 90vh; /* Match dialog max-height */
+            width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
+            position: relative;
+            max-height: 85vh;
         }
-
-        .modal-image {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            margin-bottom: 0;
-            flex-shrink: 0; /* Prevent image from shrinking */
+        
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .close-button:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .modal-content-wrapper {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        
+        .modal-text-content {
+            margin-top: 1rem;
+        }
+        
+        /* Improved image styling within the modal content */
+        .modal-text-content .modal-image {
+            width: 300px;
+            height: 300px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 0 auto 1.5rem;
+            display: block;
+            background-color: #f5f5f5;
         }
 
         @media (max-width: 768px) {
-            .modal-image {
-                height: 250px; /* Reduced height for mobile */
-                object-fit: cover;
-                display: block !important; /* Force display */
-                visibility: visible !important; /* Ensure visibility */
+            dialog.modal {
+                width: 95%;
+                max-height: 80vh;
             }
             
             .modal-content-wrapper {
-                padding: 1.5rem;
+                padding: 1rem;
+            }
+            
+            #modalTitle {
+                font-size: 1.5rem;
+                margin-top: 0.5rem;
             }
         }
-
-        .modal-content-wrapper {
-            padding: 2rem;
-            overflow-y: auto; /* Add scroll to the content wrapper */
-            flex-grow: 1; /* Allow content to grow and take available space */
-        }
-
-        .modal h2 {
-            color: #2a3d38;
-            font-family: 'Poppins', sans-serif;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-content p {
-            line-height: 1.6;
-            color: #4a5568;
-            margin-bottom: 1rem;
-        }
-
-        .modal-content ul {
-            margin: 1rem 0;
-            padding-left: 1.5rem;
-            color: #4a5568;
-        }
-
-        .modal-content h3 {
-            color: #2a3d38;
-            font-family: 'Poppins', sans-serif;
-            margin: 1.5rem 0 1rem;
-        }
-
-        .modal button {
-            margin-top: 2rem;
-            padding: 0.75rem 2rem;
-            background: #2a3d38;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            transition: background-color 0.2s ease;
-        }
-
-        .modal button:hover {
-            background: #1a2d28;
+        
+        @media (max-width: 480px) {
+            .modal-content-wrapper {
+                padding: 0.75rem;
+            }
+            
+            #modalTitle {
+                font-size: 1.25rem;
+            }
         }
     </style>
 
@@ -352,18 +350,16 @@ use Illuminate\Support\Str;
             <div class="form-group">
                 <label>Extra Opties</label>
                 <div class="checkbox-group">
+                    @php
+                        $products = App\Models\Product::where('is_published', true)->get();
+                    @endphp
+                    
+                    @foreach($products as $product)
                     <div class="checkbox-option">
-                        <input type="checkbox" id="photobooth" name="extras[]" value="photobooth" {{ in_array('photobooth', old('extras', [])) ? 'checked' : '' }}>
-                        <label for="photobooth">Interesse in photobooth</label>
+                        <input type="checkbox" id="{{ $product->name }}" name="extras[]" value="{{ $product->name }}" {{ in_array($product->name, old('extras', [])) ? 'checked' : '' }}>
+                        <label for="{{ $product->name }}">Interesse in {{ $product->title }}</label>
                     </div>
-                    <div class="checkbox-option">
-                        <input type="checkbox" id="lights" name="extras[]" value="lights" {{ in_array('lights', old('extras', [])) ? 'checked' : '' }}>
-                        <label for="lights">Interesse in priklichten</label>
-                    </div>
-                    <div class="checkbox-option">
-                        <input type="checkbox" id="foodtruck" name="extras[]" value="foodtruck" {{ in_array('foodtruck', old('extras', [])) ? 'checked' : '' }}>
-                        <label for="foodtruck">Interesse in foodtruck</label>
-                    </div>
+                    @endforeach
                 </div>
                 @error('extras')
                     <span class="error">{{ $message }}</span>
