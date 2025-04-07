@@ -32,23 +32,60 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Handle mobile navigation
-    const mobileMenuButton = document.querySelector('.mobile-menu-button');
+    // Mobile menu toggle
+    const menuToggle = document.querySelector('.menu-toggle');
     const mainNav = document.querySelector('.main-nav');
+    const body = document.body;
     
-    if (mobileMenuButton && mainNav) {
-        mobileMenuButton.addEventListener('click', function() {
+    if (menuToggle && mainNav) {
+        function toggleMenu() {
+            menuToggle.classList.toggle('active');
             mainNav.classList.toggle('active');
-            mobileMenuButton.classList.toggle('active');
+            body.classList.toggle('menu-open');
+        }
+        
+        menuToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleMenu();
         });
         
         // Close menu when clicking on a link
         const navLinks = mainNav.querySelectorAll('a');
         navLinks.forEach(link => {
             link.addEventListener('click', function() {
-                mainNav.classList.remove('active');
-                mobileMenuButton.classList.remove('active');
+                if (mainNav.classList.contains('active')) {
+                    toggleMenu();
+                }
             });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!menuToggle.contains(e.target) && 
+                !mainNav.contains(e.target) && 
+                mainNav.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+        
+        // Close menu on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && mainNav.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+    }
+    
+    // Header scroll effect
+    const header = document.querySelector('header');
+    
+    if (header) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
         });
     }
 });
