@@ -114,7 +114,7 @@ use Illuminate\Support\Str;
                 <details class="checklist-item">
                     <summary>
                         <h3>{{ $faq->question }}</h3>
-                        <span class="icon">+</span>
+                        <span class="icon"></span>
                     </summary>
                     <div class="content">
                         {!! $faq->answer !!}
