@@ -1,2 +1,12 @@
 User-agent: *
-Disallow:
+Allow: /
+Allow: /sitemap.xml
+Allow: /assets/algemene-voorwaarden-luova.pdf
+Disallow: /admin
+Disallow: /filament
+Disallow: /login
+Disallow: /register
+Disallow: /password
+
+# Sitemap
+Sitemap: https://luovatent.nl/sitemap.xml

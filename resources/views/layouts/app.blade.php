@@ -3,7 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Luova Tent')</title>
+    
+    {{-- Include SEO Meta Tags --}}
+    <x-seo-meta 
+        title="{{ View::hasSection('title') ? View::getSection('title') : 'Luova Tent - Stretchtent Verhuur voor Evenementen in Friesland' }}"
+        description="{{ View::hasSection('description') ? View::getSection('description') : 'Huur een elegante stretchtent (10x15m) voor bruiloften, festivals, buurtfeesten en familiedagen. Inclusief opties voor silent disco, photobooth en foodtruck. Ruimte voor 150 personen.' }}"
+        ogImage="{{ View::hasSection('ogImage') ? View::getSection('ogImage') : asset('images/logo-transparant.png') }}"
+        includeFaqSchema="{{ request()->path() === '/' ? 'true' : 'false' }}"
+    />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('favicon-16x16.png') }}" type="image/png" sizes="16x16">
+    <link rel="icon" href="{{ asset('favicon-32x32.png') }}" type="image/png" sizes="32x32">
+    <link rel="icon" href="{{ asset('favicon-48x48.png') }}" type="image/png" sizes="48x48">
+    <link rel="apple-touch-icon" href="{{ asset('favicon-192x192.png') }}">
+    <meta name="msapplication-TileImage" content="{{ asset('favicon-192x192.png') }}">
+    
     <link rel="stylesheet" href="{{ asset('style.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.3.8/dist/photoswipe.css">
     @yield('head')

@@ -4,11 +4,17 @@ use Illuminate\Support\Str;
 
 @extends('layouts.app')
 
+@section('title', 'Luova Tent - Elegante Stretchtent Verhuur voor Evenementen in Friesland')
+
+@section('description', 'Huur een prachtige stretchtent (10x15m) voor bruiloften, festivals, buurtfeesten en familiedagen in Friesland. Met opties voor silent disco, photobooth en foodtruck. Ruimte voor 150 personen.')
+
+@section('ogImage', asset('images/068.jpg.jpeg'))
+
 @section('head')
-    <meta name="description" content="Luova Tent - De perfecte tent voor jouw evenement">
-    <meta property="og:title" content="Luova Tent">
-    <meta property="og:description" content="De perfecte tent voor bruiloften, buurtfeesten, familiedagen en meer">
-    <meta property="og:image" content="{{ asset('images/hero.jpg') }}">
+    <meta name="description" content="@yield('description')">
+    <meta property="og:title" content="@yield('title')">
+    <meta property="og:description" content="@yield('description')">
+    <meta property="og:image" content="@yield('ogImage')">
     <meta property="og:url" content="{{ url('/') }}">
     <meta property="og:type" content="website">
     
