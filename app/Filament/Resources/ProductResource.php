@@ -27,6 +27,16 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Section::make('Tent Section')
+                    ->schema([
+                        Forms\Components\TextInput::make('tent_heading')
+                            ->label('Tent Heading')
+                            ->required(),
+                        Forms\Components\Textarea::make('tent_subheading')
+                            ->label('Tent Subheading')
+                            ->required()
+                            ->rows(3),
+                    ]),
                 Forms\Components\Section::make('Silent Disco')
                     ->schema([
                         Forms\Components\RichEditor::make('silent_disco_content')

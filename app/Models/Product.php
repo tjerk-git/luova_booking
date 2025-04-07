@@ -13,5 +13,7 @@ class Product extends Model
         'silent_disco_content',
         'photobooth_content',
         'foodtruck_content',
+        'tent_heading',
+        'tent_subheading',
     ];
 }

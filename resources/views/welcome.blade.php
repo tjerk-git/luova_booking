@@ -72,10 +72,12 @@ use Illuminate\Support\Str;
 <main>
 
     <section class="hero">
-        <h1>De perfecte tent</h1>
-        <h2>Voor bruiloften, buurtfeest, familiedag, teamuitje, festivals met deze prachtige stretchtent van 10 x 15m is er ruimte voor 150 zitplaatsen
+        @php
+            $product = App\Models\Product::first();
+        @endphp
+        <h1>{{ $product->tent_heading ?? 'De perfecte tent' }}</h1>
+        <h2>{{ $product->tent_subheading ?? 'Voor bruiloften, buurtfeest, familiedag, teamuitje, festivals met deze prachtige stretchtent van 10 x 15m is er ruimte voor 150 zitplaatsen' }}
         </h2>
-
 
         <img class="hero-image"
             src="/images/068.jpg.jpeg"
@@ -196,7 +198,8 @@ use Illuminate\Support\Str;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             width: 90%;
             max-width: 800px;
-            overflow: hidden;
+            max-height: 90vh; /* Limit height to 90% of viewport height */
+            overflow: hidden; /* Keep this to hide overflow from rounded corners */
         }
 
         dialog.modal::backdrop {
@@ -206,6 +209,9 @@ use Illuminate\Support\Str;
 
         .modal-content {
             max-width: 100%;
+            max-height: 90vh; /* Match dialog max-height */
+            display: flex;
+            flex-direction: column;
         }
 
         .modal-image {
@@ -213,6 +219,7 @@ use Illuminate\Support\Str;
             height: 400px;
             object-fit: cover;
             margin-bottom: 0;
+            flex-shrink: 0; /* Prevent image from shrinking */
         }
 
         @media (max-width: 768px) {
@@ -230,6 +237,8 @@ use Illuminate\Support\Str;
 
         .modal-content-wrapper {
             padding: 2rem;
+            overflow-y: auto; /* Add scroll to the content wrapper */
+            flex-grow: 1; /* Allow content to grow and take available space */
         }
 
         .modal h2 {
