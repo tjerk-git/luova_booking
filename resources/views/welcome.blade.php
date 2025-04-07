@@ -5,67 +5,76 @@ use Illuminate\Support\Str;
 @extends('layouts.app')
 
 @section('head')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.3.8/dist/photoswipe.min.css">
-<script type="module">
-    import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5.3.8/dist/photoswipe-lightbox.esm.min.js'
-    import PhotoSwipe from 'https://cdn.jsdelivr.net/npm/photoswipe@5.3.8/dist/photoswipe.esm.min.js'
+    <meta name="description" content="Luova Tent - De perfecte tent voor jouw evenement">
+    <meta property="og:title" content="Luova Tent">
+    <meta property="og:description" content="De perfecte tent voor bruiloften, buurtfeesten, familiedagen en meer">
+    <meta property="og:image" content="{{ asset('images/hero.jpg') }}">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:type" content="website">
+    
+    <!-- Micromodal.js for better modal support across all browsers and devices -->
+    <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.3.8/dist/photoswipe.min.css">
+    <script type="module">
+        import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5.3.8/dist/photoswipe-lightbox.esm.min.js'
+        import PhotoSwipe from 'https://cdn.jsdelivr.net/npm/photoswipe@5.3.8/dist/photoswipe.esm.min.js'
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const galleryIds = ['gallery', 'circle-gallery'];
-        
-        galleryIds.forEach(galleryId => {
-            const lightbox = new PhotoSwipeLightbox({
-                gallery: '#' + galleryId,
-                children: 'a',
-                pswpModule: PhotoSwipe,
-                paddingFn: (viewportSize) => {
-                    return {
-                        top: 30,
-                        bottom: 30,
-                        left: 0,
-                        right: 0
+        document.addEventListener('DOMContentLoaded', function() {
+            const galleryIds = ['gallery', 'circle-gallery'];
+            
+            galleryIds.forEach(galleryId => {
+                const lightbox = new PhotoSwipeLightbox({
+                    gallery: '#' + galleryId,
+                    children: 'a',
+                    pswpModule: PhotoSwipe,
+                    paddingFn: (viewportSize) => {
+                        return {
+                            top: 30,
+                            bottom: 30,
+                            left: 0,
+                            right: 0
+                        }
                     }
-                }
+                });
+                lightbox.init();
             });
-            lightbox.init();
         });
-    });
-</script>
-<template id="pswp-template" data-pswp-template>
-    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="pswp__bg"></div>
-        <div class="pswp__scroll-wrap">
-            <div class="pswp__container">
-                <div class="pswp__item"></div>
-                <div class="pswp__item"></div>
-                <div class="pswp__item"></div>
-            </div>
-            <div class="pswp__ui pswp__ui--hidden">
-                <div class="pswp__top-bar">
-                    <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-                    <button class="pswp__button pswp__button--share" title="Share"></button>
-                    <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-                    <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-                    <div class="pswp__preloader">
-                        <div class="pswp__preloader__icn">
-                            <div class="pswp__preloader__cut">
-                                <div class="pswp__preloader__donut"></div>
+    </script>
+    <template id="pswp-template" data-pswp-template>
+        <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="pswp__bg"></div>
+            <div class="pswp__scroll-wrap">
+                <div class="pswp__container">
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                </div>
+                <div class="pswp__ui pswp__ui--hidden">
+                    <div class="pswp__top-bar">
+                        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                        <button class="pswp__button pswp__button--share" title="Share"></button>
+                        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                        <div class="pswp__preloader">
+                            <div class="pswp__preloader__icn">
+                                <div class="pswp__preloader__cut">
+                                    <div class="pswp__preloader__donut"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                    <div class="pswp__share-tooltip"></div>
-                </div>
-                <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
-                <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
-                <div class="pswp__caption">
-                    <div class="pswp__caption__center"></div>
+                    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                        <div class="pswp__share-tooltip"></div>
+                    </div>
+                    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+                    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+                    <div class="pswp__caption">
+                        <div class="pswp__caption__center"></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</template>
+    </template>
 @endsection
 
 @section('content')
@@ -115,9 +124,9 @@ use Illuminate\Support\Str;
         </div>
     </section>
 
-    <section class="tent-info">
-        <h1>Extra opties</h1>
-        <div class="circle-gallery" id="circle-gallery">
+    <section class="extra-options" id="extra-options">
+        <h1>Extra Opties</h1>
+        <div class="options-grid">
             @php
                 $products = App\Models\Product::where('is_published', true)
                     ->orderBy('created_at')
@@ -125,161 +134,41 @@ use Illuminate\Support\Str;
             @endphp
             
             @foreach($products as $product)
-            <div class="circle-item" data-title="{{ $product->title }}">
-                <div class="modal-content-template" hidden>
+            <div class="option-item" data-micromodal-trigger="modal-{{ $product->id }}">
+                <div class="option-image">
+                    <img src="{{ $product->image_url }}" alt="{{ $product->title }}">
+                </div>
+                <h2>{{ $product->title }}</h2>
+                <div class="hidden-content" hidden>
                     <img class="modal-image" src="{{ $product->image_url }}" alt="{{ $product->title }}">
                     {!! $product->content !!}
                 </div>
-                <img src="{{ $product->image_url }}" alt="{{ $product->title }}">
-                <span>{{ $product->title }}</span>
+            </div>
+            
+            <!-- Modal for {{ $product->title }} -->
+            <div class="modal micromodal-slide" id="modal-{{ $product->id }}" aria-hidden="true">
+                <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+                    <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-{{ $product->id }}-title">
+                        <header class="modal__header">
+                            <h2 class="modal__title" id="modal-{{ $product->id }}-title">
+                                {{ $product->title }}
+                            </h2>
+                            <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+                        </header>
+                        <main class="modal__content" id="modal-{{ $product->id }}-content">
+                            <div class="modal__image-container">
+                                <img src="{{ $product->image_url }}" alt="{{ $product->title }}" class="modal__image">
+                            </div>
+                            <div class="modal__text">
+                                {!! $product->content !!}
+                            </div>
+                        </main>
+                    </div>
+                </div>
             </div>
             @endforeach
         </div>
     </section>
-
-    <dialog id="optionModal" class="modal">
-        <form method="dialog" class="modal-content">
-            <button class="close-button" aria-label="Close modal">×</button>
-            <div class="modal-content-wrapper">
-                <h2 id="modalTitle"></h2>
-                <div id="modalContentText" class="modal-text-content"></div>
-            </div>
-        </form>
-    </dialog>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const modal = document.getElementById('optionModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalContentText = document.getElementById('modalContentText');
-            const closeButton = modal.querySelector('.close-button');
-
-            document.querySelectorAll('.circle-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    modalTitle.textContent = item.dataset.title;
-                    const template = item.querySelector('.modal-content-template');
-                    const content = template.innerHTML;
-                    
-                    // Put all content in the text area
-                    modalContentText.innerHTML = content;
-                    modal.showModal();
-                });
-            });
-            
-            // Close modal when clicking the close button
-            closeButton.addEventListener('click', () => {
-                modal.close();
-            });
-            
-            // Close modal when clicking outside
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.close();
-                }
-            });
-        });
-    </script>
-
-    <style>
-        dialog.modal {
-            padding: 0;
-            border-radius: 12px;
-            border: none;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            width: 90%;
-            max-width: 800px;
-            max-height: 85vh;
-            overflow: hidden;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            margin: 0;
-        }
-
-        dialog.modal::backdrop {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(4px);
-        }
-
-        .modal-content {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            max-height: 85vh;
-        }
-        
-        .close-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.7);
-            border: none;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 10;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        
-        .close-button:hover {
-            background: rgba(255, 255, 255, 0.9);
-        }
-        
-        .modal-content-wrapper {
-            padding: 1.5rem;
-            overflow-y: auto;
-            flex-grow: 1;
-        }
-        
-        .modal-text-content {
-            margin-top: 1rem;
-        }
-        
-        /* Improved image styling within the modal content */
-        .modal-text-content .modal-image {
-            width: 300px;
-            height: 300px;
-            object-fit: contain;
-            border-radius: 8px;
-            margin: 0 auto 1.5rem;
-            display: block;
-            background-color: #f5f5f5;
-        }
-
-        @media (max-width: 768px) {
-            dialog.modal {
-                width: 95%;
-                max-height: 80vh;
-            }
-            
-            .modal-content-wrapper {
-                padding: 1rem;
-            }
-            
-            #modalTitle {
-                font-size: 1.5rem;
-                margin-top: 0.5rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .modal-content-wrapper {
-                padding: 0.75rem;
-            }
-            
-            #modalTitle {
-                font-size: 1.25rem;
-            }
-        }
-    </style>
 
     <section id="booking" class="booking">
         @if(session('success'))
