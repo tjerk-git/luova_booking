@@ -45,9 +45,14 @@ class PhotoResource extends Resource
                             ->directory('images')
                             ->disk('public')
                             ->columnSpanFull()
-                            ->saveUploadedFileUsing(function (TemporaryUploadedFile $file) {
+                            ->saveUploadedFileUsing(function (TemporaryUploadedFile $file, Forms\Set $set) {
                                 $imageService = new ImageService();
                                 $result = $imageService->convertToWebP($file);
+                                
+                                // Set the width and height immediately after conversion
+                                $set('width', $result['width']);
+                                $set('height', $result['height']);
+                                
                                 return $result['path'];
                             })
                             ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, ?string $state) {
@@ -59,16 +64,10 @@ class PhotoResource extends Resource
                                 
                                 // Auto-detect image dimensions
                                 if ($state) {
-                                    $path = Storage::disk('public')->path($state);
-                                    if (file_exists($path)) {
-                                        [$width, $height] = getimagesize($path);
-                                        $set('width', $width);
-                                        $set('height', $height);
-                                    } else {
-                                        // Fallback to HD resolution
-                                        $set('width', 1280);
-                                        $set('height', 720);
-                                    }
+                                    $imageService = new ImageService();
+                                    $dimensions = $imageService->getDimensions($state);
+                                    $set('width', $dimensions['width']);
+                                    $set('height', $dimensions['height']);
                                 }
                             }),
                         Forms\Components\TextInput::make('title')

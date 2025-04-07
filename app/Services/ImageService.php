@@ -122,4 +122,57 @@ class ImageService
             ];
         }
     }
+    
+    /**
+     * Get the dimensions of an image stored in the public disk
+     *
+     * @param string $path The path to the image relative to the disk
+     * @param string $disk The storage disk to use
+     * @return array Returns an array with width and height
+     */
+    public function getDimensions(string $path, string $disk = 'public'): array
+    {
+        try {
+            $fullPath = Storage::disk($disk)->path($path);
+            
+            if (file_exists($fullPath)) {
+                // Use Intervention Image to get accurate dimensions
+                $image = $this->manager->read($fullPath);
+                $width = $image->width();
+                $height = $image->height();
+                
+                Log::info('Retrieved image dimensions', [
+                    'path' => $path,
+                    'width' => $width,
+                    'height' => $height
+                ]);
+                
+                return [
+                    'width' => $width,
+                    'height' => $height
+                ];
+            }
+            
+            // Fallback if file doesn't exist
+            Log::warning('Image file not found when getting dimensions', [
+                'path' => $path
+            ]);
+            
+            return [
+                'width' => 1280,
+                'height' => 720
+            ];
+        } catch (\Exception $e) {
+            // Log error and return default dimensions
+            Log::error('Error getting image dimensions', [
+                'error' => $e->getMessage(),
+                'path' => $path
+            ]);
+            
+            return [
+                'width' => 1280,
+                'height' => 720
+            ];
+        }
+    }
 }
