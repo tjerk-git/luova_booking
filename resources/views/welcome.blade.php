@@ -44,6 +44,113 @@ use Illuminate\Support\Str;
                 });
                 lightbox.init();
             });
+            
+            // Scroll animation observer
+            const animatedElements = document.querySelectorAll('.animate-on-scroll');
+            
+            // Immediately show hero elements without waiting for scroll on page load
+            setTimeout(() => {
+                document.querySelectorAll('.hero .animate-on-scroll').forEach((el, index) => {
+                    setTimeout(() => {
+                        el.classList.add('visible');
+                    }, 300 * index); // Staggered animation for hero elements
+                });
+            }, 300);
+            
+            // Set up intersection observer for scroll animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Once the animation has played, no need to observe anymore
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+            
+            // Observe all animated elements except those in the hero section (which animate on load)
+            animatedElements.forEach(el => {
+                if (!el.closest('.hero')) {
+                    observer.observe(el);
+                }
+            });
+            
+            // Parallax effect for hero section
+            const heroSection = document.querySelector('.hero');
+            const heroImage = document.querySelector('.hero-image');
+            const shapes = document.querySelectorAll('.shape');
+            
+            if (heroSection && window.innerWidth > 1024) {
+                window.addEventListener('scroll', () => {
+                    const scrollPosition = window.scrollY;
+                    const heroTop = heroSection.offsetTop;
+                    const heroHeight = heroSection.offsetHeight;
+                    
+                    // Only apply parallax when hero section is in view
+                    if (scrollPosition >= heroTop - window.innerHeight && 
+                        scrollPosition <= heroTop + heroHeight) {
+                        
+                        const scrollPercentage = (scrollPosition - (heroTop - window.innerHeight)) / 
+                                               (heroHeight + window.innerHeight);
+                        
+                        // Move hero image slightly
+                        if (heroImage) {
+                            heroImage.style.transform = `translateY(${scrollPercentage * 50}px) rotate(${scrollPercentage * 5}deg)`;
+                        }
+                        
+                        // Move shapes at different speeds
+                        shapes.forEach((shape, index) => {
+                            const speed = (index + 1) * 0.2;
+                            shape.style.transform = `translate(${scrollPercentage * 100 * speed}px, ${scrollPercentage * 100 * speed}px)`;
+                        });
+                    }
+                });
+            }
+            
+            // Interactive feature items
+            const featureItems = document.querySelectorAll('.feature-item');
+            featureItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    item.style.transform = 'translateY(-8px) scale(1.05)';
+                });
+                
+                item.addEventListener('mouseleave', () => {
+                    item.style.transform = '';
+                });
+            });
+            
+            // Add mouse movement effect to hero section
+            const heroContent = document.querySelector('.hero-content');
+            if (heroContent && window.innerWidth > 1024) {
+                heroSection.addEventListener('mousemove', (e) => {
+                    const xPos = (e.clientX / window.innerWidth) - 0.5;
+                    const yPos = (e.clientY / window.innerHeight) - 0.5;
+                    
+                    heroContent.style.transform = `translate(${xPos * 20}px, ${yPos * 20}px)`;
+                    
+                    if (heroImage) {
+                        heroImage.style.transform = `translate(${-xPos * 30}px, ${-yPos * 30}px)`;
+                    }
+                    
+                    shapes.forEach((shape, index) => {
+                        const speed = (index + 1) * 2;
+                        shape.style.transform = `translate(${-xPos * speed * 50}px, ${-yPos * speed * 50}px)`;
+                    });
+                });
+                
+                heroSection.addEventListener('mouseleave', () => {
+                    heroContent.style.transform = '';
+                    if (heroImage) {
+                        heroImage.style.transform = '';
+                    }
+                    shapes.forEach(shape => {
+                        shape.style.transform = '';
+                    });
+                });
+            }
         });
     </script>
     <template id="pswp-template" data-pswp-template>
@@ -90,15 +197,38 @@ use Illuminate\Support\Str;
         @php
             $tent = App\Models\Tent::where('is_published', true)->first();
         @endphp
-        <h1>{{ $tent->heading ?? 'De perfecte tent' }}</h1>
-        <h2>{{ $tent->subheading ?? 'Voor bruiloften, buurtfeest, familiedag, teamuitje, festivals met deze prachtige stretchtent van 10 x 15m is er ruimte voor 150 zitplaatsen' }}
-        </h2>
+        <div class="hero-content">
+            <h1 class="animate-on-scroll fade-in">{{ $tent->heading ?? 'De perfecte tent' }}</h1>
+            <h2 class="animate-on-scroll fade-in-delay">{{ $tent->subheading ?? 'Voor bruiloften, buurtfeest, familiedag, teamuitje, festivals met deze prachtige stretchtent van 10 x 15m is er ruimte voor 150 zitplaatsen' }}</h2>
+            <div class="hero-features animate-on-scroll stagger-fade">
+                <div class="feature-item">
+                    <span class="feature-icon"></span>
+                    <span>Bruiloften</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon"></span>
+                    <span>Festivals</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon"></span>
+                    <span>Familiedagen</span>
+                </div>
+            </div>
+            <button id="options-button" class="button animate-on-scroll pulse">Bekijk de opties</button>
+        </div>
 
-        <img class="hero-image"
-            src="/images/068.jpg.jpeg"
-            alt="Elegant white wedding tent">
+        <div class="hero-image-container">
 
-        <button id="options-button" class="button">Bekijk de opties</button>
+            <img class="hero-image animate-on-scroll float"
+                src="/images/068.jpg.jpeg"
+                alt="Elegant white wedding tent">
+            <div class="image-overlay"></div>
+        </div>
+        
+        <div class="scroll-indicator animate-on-scroll fade-in-delay">
+            <span>Scroll voor meer</span>
+            <div class="scroll-arrow"></div>
+        </div>
     </section>
 
 
