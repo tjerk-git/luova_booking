@@ -109,48 +109,7 @@ use Illuminate\Support\Str;
                     }
                 });
             }
-            
-            // Interactive feature items
-            const featureItems = document.querySelectorAll('.feature-item');
-            featureItems.forEach(item => {
-                item.addEventListener('mouseenter', () => {
-                    item.style.transform = 'translateY(-8px) scale(1.05)';
-                });
-                
-                item.addEventListener('mouseleave', () => {
-                    item.style.transform = '';
-                });
-            });
-            
-            // Add mouse movement effect to hero section
-            const heroContent = document.querySelector('.hero-content');
-            if (heroContent && window.innerWidth > 1024) {
-                heroSection.addEventListener('mousemove', (e) => {
-                    const xPos = (e.clientX / window.innerWidth) - 0.5;
-                    const yPos = (e.clientY / window.innerHeight) - 0.5;
-                    
-                    heroContent.style.transform = `translate(${xPos * 20}px, ${yPos * 20}px)`;
-                    
-                    if (heroImage) {
-                        heroImage.style.transform = `translate(${-xPos * 30}px, ${-yPos * 30}px)`;
-                    }
-                    
-                    shapes.forEach((shape, index) => {
-                        const speed = (index + 1) * 2;
-                        shape.style.transform = `translate(${-xPos * speed * 50}px, ${-yPos * speed * 50}px)`;
-                    });
-                });
-                
-                heroSection.addEventListener('mouseleave', () => {
-                    heroContent.style.transform = '';
-                    if (heroImage) {
-                        heroImage.style.transform = '';
-                    }
-                    shapes.forEach(shape => {
-                        shape.style.transform = '';
-                    });
-                });
-            }
+
         });
     </script>
     <template id="pswp-template" data-pswp-template>
@@ -200,20 +159,6 @@ use Illuminate\Support\Str;
         <div class="hero-content">
             <h1 class="animate-on-scroll fade-in">{{ $tent->heading ?? 'De perfecte tent' }}</h1>
             <h2 class="animate-on-scroll fade-in-delay">{{ $tent->subheading ?? 'Voor bruiloften, buurtfeest, familiedag, teamuitje, festivals met deze prachtige stretchtent van 10 x 15m is er ruimte voor 150 zitplaatsen' }}</h2>
-            <div class="hero-features animate-on-scroll stagger-fade">
-                <div class="feature-item">
-                    <span class="feature-icon"></span>
-                    <span>Bruiloften</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-icon"></span>
-                    <span>Festivals</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-icon"></span>
-                    <span>Familiedagen</span>
-                </div>
-            </div>
             <button id="options-button" class="button animate-on-scroll pulse">Bekijk de opties</button>
         </div>
 
