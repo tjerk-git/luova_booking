@@ -380,7 +380,7 @@ section {
 
 /* Animation and scroll effects for hero section */
 .hero {
-  margin-top: 4rem;
+  margin-top: 7rem;
   padding: 2rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
