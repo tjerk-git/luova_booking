@@ -207,7 +207,7 @@ use Illuminate\Support\Str;
 
     <section class="extra-options" id="extra-options">
         <div class="section-container">
-            <h1>Extra Opties</h1>
+            <h1 class="animate-on-scroll fade-in">Wel eens gedacht aan?</h1>
             <div class="options-grid">
                 @php
                     $products = App\Models\Product::where('is_published', true)
@@ -320,7 +320,7 @@ use Illuminate\Support\Str;
             </div>
 
             <div class="form-group">
-                <label>Wel eens gedacht aan?</label>
+                <label>Extra Opties</label>
                 <div class="checkbox-group">
                     @php
                         $products = App\Models\Product::where('is_published', true)->get();
