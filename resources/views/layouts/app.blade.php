@@ -22,6 +22,7 @@
     
     <link rel="stylesheet" href="{{ asset('style.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.3.8/dist/photoswipe.css">
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="00fef24d-f93c-4458-abd0-3c70411f4273"></script>
     @yield('head')
 </head>
 <body>
@@ -31,10 +32,10 @@
         </div>
         <nav class="main-nav">
             <ul>
-                <li><a href="#gallery">Foto's</a></li>
+                <li><a href="#gallery">Impressie</a></li>
                 <li><a href="#circle-gallery">Extra's</a></li>
-                <li><a href="#faq">FAQ</a></li>
-                <li><a href="#booking">Boeken</a></li>
+                <li><a href="#faq">Veelgestelde vragen</a></li>
+                <li><a href="#booking">Neem contact op</a></li>
             </ul>
         </nav>
         <button class="menu-toggle" aria-label="Toggle menu">
@@ -74,6 +75,7 @@
                 <ul>
                     <li><a href="{{ asset('assets/algemene-voorwaarden-luova.pdf') }}" target="_blank">Algemene voorwaarden</a></li>
                     <li><a href="#faq">Veelgestelde vragen</a></li>
+                    <li><a href="{{ asset('assets/privacy-policy-luova.pdf') }}" target="_blank">Privacy policy</a></li>
                 </ul>
             </div>
         </div>

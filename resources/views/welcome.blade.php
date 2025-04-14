@@ -178,7 +178,7 @@ use Illuminate\Support\Str;
 
 
     <section class="photos">
-        <h1>Impressie van de tent</h1>
+        <h1 class="animate-on-scroll fade-in">Impressie van de tent</h1>
         <div class="gallery-grid" id="gallery">
             @foreach(\App\Models\Photo::where('is_published', true)->orderBy('order_column')->get() as $photo)
             <a href="{{ asset('storage/' . $photo->image_path) }}" data-pswp-width="{{ $photo->width }}" data-pswp-height="{{ $photo->height }}">
@@ -189,7 +189,7 @@ use Illuminate\Support\Str;
     </section>
 
     <section class="checklist" id="faq">
-        <h1>Veelgestelde vragen</h1>
+        <h1 class="animate-on-scroll fade-in">Even alles op een rijtje...</h1>
         <div class="checklist-grid">
             @foreach(\App\Models\Faq::where('is_published', true)->orderBy('order_column')->get() as $faq)
                 <details class="checklist-item">
@@ -272,7 +272,7 @@ use Illuminate\Support\Str;
                 });
             </script>
         @endif
-        <h1>Boek de tent</h1>
+        <h1 class="animate-on-scroll fade-in">Laten we elkaar spreken!</h1>
         <form method="POST" action="{{ route('bookings.store') }}" class="booking-form">
             @csrf
             <div class="form-row">
@@ -320,7 +320,7 @@ use Illuminate\Support\Str;
             </div>
 
             <div class="form-group">
-                <label>Extra Opties</label>
+                <label>Wel eens gedacht aan?</label>
                 <div class="checkbox-group">
                     @php
                         $products = App\Models\Product::where('is_published', true)->get();
