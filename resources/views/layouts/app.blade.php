@@ -59,6 +59,7 @@
                 <ul>
                     <li>Josytha Hakvoort</li>
                     <li><a href="mailto:info@luovatent.nl">info@luovatent.nl</a></li>
+                    <li><a href="tel:+31628099530">+31 6 28099530</a></li>
                     <li>KvK: 94238340</li>
                 </ul>
             </div>
@@ -68,6 +69,7 @@
                     <li>Luova Tent</li>
                     <li>Haniasteeg 7</li>
                     <li>8911 BX Leeuwarden</li>
+                    <li><a href="https://maps.app.goo.gl/saCfPdnUuf1S9q5e6" target="_blank">Open Google Maps</a></li>
                 </ul>
             </div>
             <div class="footer-section">

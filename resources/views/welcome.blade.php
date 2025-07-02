@@ -203,6 +203,7 @@ use Illuminate\Support\Str;
                 </details>
             @endforeach
         </div>
+        
     </section>
 
     <section class="extra-options" id="extra-options">

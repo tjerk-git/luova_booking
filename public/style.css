@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
 
 /* Box sizing rules */
@@ -417,6 +418,7 @@ section {
   margin: 0 0 1.5rem 0;
   line-height: 1.4;
   opacity: 0.9;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 .hero-features {
@@ -869,7 +871,6 @@ section {
   color: #1e293b;
   font-size:3rem;
 font-weight: 200;
-font-family: 'Noto Sans', sans-serif;
 }
 
 .checklist-grid {
@@ -893,12 +894,14 @@ font-family: 'Noto Sans', sans-serif;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 .checklist-item summary h3 {
   margin: 0;
   font-size: 1.125rem;
   font-weight: bold;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 .checklist-item .icon {
@@ -1435,4 +1438,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   .options-grid {
     grid-template-columns: 1fr;
   }
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+}
+
+.checklist h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
 }
