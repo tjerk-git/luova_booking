@@ -167,7 +167,7 @@ use Illuminate\Support\Str;
             <img class="hero-image animate-on-scroll float"
                 src="/images/068.jpg.jpeg"
                 alt="Elegant white wedding tent">
-            <div class="image-overlay"></div>
+
         </div>
         
         <div class="scroll-indicator animate-on-scroll fade-in-delay">
@@ -189,6 +189,7 @@ use Illuminate\Support\Str;
     </section>
 
     <section class="checklist" id="faq">
+
         <h1 class="animate-on-scroll fade-in">Even alles op een rijtje...</h1>
         <div class="checklist-grid">
             @foreach(\App\Models\Faq::where('is_published', true)->orderBy('order_column')->get() as $faq)
@@ -208,6 +209,7 @@ use Illuminate\Support\Str;
 
     <section class="extra-options" id="extra-options">
         <div class="section-container">
+  
             <h1 class="animate-on-scroll fade-in">Wel eens gedacht aan?</h1>
             <div class="options-grid">
                 @php
